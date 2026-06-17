@@ -50,6 +50,7 @@ const T = {
     aiError: "Échec de la génération, réessaie.",
     tagsLabel: "Tags (optionnel, max 3)", allTags: "Tous les tags",
     deleteBtn: "Supprimer", deleteConfirm: "Supprimer définitivement ce build ?",
+    editBtn: "Modifier", editTitle: "Modifier le build", saveEdit: "Enregistrer", updated: "Build modifié ✓",
     reportBtn: "Signaler", reported: "Build signalé, merci.", alreadyReported: "Tu as déjà signalé ce build.",
     tags: { antiTunnel: "Anti-tunnel", genRush: "Gen-rush", stealth: "Furtif", altruist: "Altruiste",
       chase: "Poursuite", slowdown: "Ralentissement", info: "Information", hex: "Hex", aura: "Aura",
@@ -94,6 +95,7 @@ const T = {
     aiError: "Generation failed, try again.",
     tagsLabel: "Tags (optional, max 3)", allTags: "All tags",
     deleteBtn: "Delete", deleteConfirm: "Permanently delete this build?",
+    editBtn: "Edit", editTitle: "Edit build", saveEdit: "Save", updated: "Build updated ✓",
     reportBtn: "Report", reported: "Build reported, thanks.", alreadyReported: "You already reported this build.",
     tags: { antiTunnel: "Anti-tunnel", genRush: "Gen-rush", stealth: "Stealth", altruist: "Altruistic",
       chase: "Chase", slowdown: "Slowdown", info: "Info", hex: "Hex", aura: "Aura",
@@ -138,6 +140,7 @@ const T = {
     aiError: "Falló la generación, inténtalo de nuevo.",
     tagsLabel: "Etiquetas (opcional, máx 3)", allTags: "Todas las etiquetas",
     deleteBtn: "Eliminar", deleteConfirm: "¿Eliminar definitivamente esta build?",
+    editBtn: "Editar", editTitle: "Editar build", saveEdit: "Guardar", updated: "Build actualizada ✓",
     reportBtn: "Reportar", reported: "Build reportada, gracias.", alreadyReported: "Ya reportaste esta build.",
     tags: { antiTunnel: "Anti-túnel", genRush: "Gen-rush", stealth: "Sigilo", altruist: "Altruista",
       chase: "Persecución", slowdown: "Ralentización", info: "Información", hex: "Hex", aura: "Aura",
@@ -204,6 +207,7 @@ export default function App() {
   const [tagFilter, setTagFilter] = useState("all");
   const [authorView, setAuthorView] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [editing, setEditing] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [toast, setToast] = useState("");
@@ -282,16 +286,26 @@ export default function App() {
     } catch (e) {}
   };
 
-  const addBuild = async ({ title, desc, side, perks, tags }) => {
+  const addBuild = async ({ id, title, desc, side, perks, tags }) => {
     if (!myId) { flash(t.mustLoginPropose); return; }
     try {
-      const { error } = await supabase.from("builds").insert({
-        title, description: desc, side, perks, tags: tags || [], author_id: myId, author_pseudo: me,
-      });
-      if (error) throw error;
-      await fetchAll();
-      setShowCreate(false);
-      flash(t.published);
+      if (id) {
+        const { error } = await supabase.from("builds").update({
+          title, description: desc, side, perks, tags: tags || [],
+        }).eq("id", id);
+        if (error) throw error;
+        await fetchAll();
+        setEditing(null);
+        flash(t.updated);
+      } else {
+        const { error } = await supabase.from("builds").insert({
+          title, description: desc, side, perks, tags: tags || [], author_id: myId, author_pseudo: me,
+        });
+        if (error) throw error;
+        await fetchAll();
+        setShowCreate(false);
+        flash(t.published);
+      }
     } catch (e) { flash(t.saveError); }
   };
 
@@ -498,7 +512,10 @@ export default function App() {
                         <button className="act-btn del" onClick={() => deleteBuild(b.id)}>✕ {t.deleteBtn}</button>
                       </>
                     ) : b.authorId === myId ? (
-                      <button className="act-btn del" onClick={() => deleteBuild(b.id)}>✕ {t.deleteBtn}</button>
+                      <>
+                        <button className="act-btn edit" onClick={() => setEditing(b)}>✎ {t.editBtn}</button>
+                        <button className="act-btn del" onClick={() => deleteBuild(b.id)}>✕ {t.deleteBtn}</button>
+                      </>
                     ) : (
                       <button className="act-btn rep" onClick={() => reportBuild(b.id)}>⚑ {t.reportBtn}</button>
                     )}
@@ -534,8 +551,8 @@ export default function App() {
 
       {toast && <div className="toast">{toast}</div>}
 
-      {showCreate && (
-        <CreateModal t={t} lang={lang} onClose={() => setShowCreate(false)} onSubmit={addBuild} flash={flash} setDetail={setDetail} />
+      {(showCreate || editing) && (
+        <CreateModal t={t} lang={lang} editBuild={editing} onClose={() => { setShowCreate(false); setEditing(null); }} onSubmit={addBuild} flash={flash} setDetail={setDetail} />
       )}
 
       {showAuth && <AuthModal t={t} onClose={() => setShowAuth(false)} flash={flash} />}
@@ -628,12 +645,12 @@ function PerkDetail({ perk, t, lang, onClose }) {
   );
 }
 
-function CreateModal({ t, lang, onClose, onSubmit, flash, setDetail }) {
-  const [side, setSide] = useState("survivor");
-  const [selected, setSelected] = useState([]);
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-  const [tags, setTags] = useState([]);
+function CreateModal({ t, lang, editBuild, onClose, onSubmit, flash, setDetail }) {
+  const [side, setSide] = useState(editBuild ? editBuild.side : "survivor");
+  const [selected, setSelected] = useState(editBuild ? [...editBuild.perks] : []);
+  const [title, setTitle] = useState(editBuild ? editBuild.title : "");
+  const [desc, setDesc] = useState(editBuild ? editBuild.desc : "");
+  const [tags, setTags] = useState(editBuild ? [...editBuild.tags] : []);
   const [pf, setPf] = useState("");
 
   const toggleTag = (k) => setTags((cur) => cur.includes(k) ? cur.filter((x) => x !== k) : (cur.length >= 3 ? cur : [...cur, k]));
@@ -655,14 +672,14 @@ function CreateModal({ t, lang, onClose, onSubmit, flash, setDetail }) {
   const submit = () => {
     if (!title.trim()) { flash(t.needTitle); return; }
     if (selected.length !== 4) { flash(t.needFour); return; }
-    onSubmit({ title: title.trim().slice(0, 60), desc: desc.trim().slice(0, 280), side, perks: selected, tags });
+    onSubmit({ id: editBuild ? editBuild.id : undefined, title: title.trim().slice(0, 60), desc: desc.trim().slice(0, 280), side, perks: selected, tags });
   };
 
   return (
     <div className="overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-head">
-          <h2>{t.createTitle}</h2>
+          <h2>{editBuild ? t.editTitle : t.createTitle}</h2>
           <button className="close" onClick={onClose}>✕</button>
         </div>
 
@@ -708,7 +725,7 @@ function CreateModal({ t, lang, onClose, onSubmit, flash, setDetail }) {
 
         <div className="modal-foot">
           <button className="btn-ghost" onClick={onClose}>{t.cancel}</button>
-          <button className="btn-blood" onClick={submit}>{t.publish}</button>
+          <button className="btn-blood" onClick={submit}>{editBuild ? t.saveEdit : t.publish}</button>
         </div>
       </div>
     </div>
@@ -832,11 +849,12 @@ const CSS = `
 .card-tags { display:flex; gap:6px; flex-wrap:wrap; margin:-6px 0 12px; }
 .tag-pill { font-size:10.5px; font-weight:600; color:var(--accent, #c0282d); border:1px solid var(--line);
   background:rgba(0,0,0,.25); padding:3px 9px; border-radius:14px; }
-.card-actions { display:flex; justify-content:center; margin-top:10px; }
+.card-actions { display:flex; justify-content:center; gap:8px; margin-top:10px; }
 .act-btn { background:none; border:none; color:#6b645a; font-size:11.5px; cursor:pointer; padding:4px 8px;
   border-radius:6px; transition:.15s; }
 .act-btn.del:hover { color:#e06a6a; background:rgba(192,40,45,.12); }
 .act-btn.rep:hover { color:var(--gold); background:rgba(216,177,90,.1); }
+.act-btn.edit:hover { color:#7fb0ff; background:rgba(90,140,216,.12); }
 
 .grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
   padding:8px clamp(16px,4vw,46px) 40px; }
