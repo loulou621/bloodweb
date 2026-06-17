@@ -4,10 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BLOODWEB — Builds Dead by Daylight</title>
-    <meta name="google-site-verification" content="bMq4ZJTgZu5Ids7MTHV1Or9TkwugYRkkUNSW9_1h_j8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;700&family=Inter:wght@400;500;600&display=swap" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0a0807" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="BLOODWEB" />
   </head>
   <body style="margin:0; background:#0a0807;">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () { navigator.serviceWorker.register("/sw.js").catch(function(){}); });
+      }
+    </script>
   </body>
 </html>
