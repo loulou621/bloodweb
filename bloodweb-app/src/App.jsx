@@ -509,6 +509,7 @@ export default function App() {
                       <>
                         {b.reporters.length >= REPORT_THRESHOLD && <span className="hidden-badge">{t.hidden}</span>}
                         {b.reporters.length > 0 && <span className="rep-count">⚑ {b.reporters.length}</span>}
+                        <button className="act-btn edit" onClick={() => setEditing(b)}>✎ {t.editBtn}</button>
                         <button className="act-btn del" onClick={() => deleteBuild(b.id)}>✕ {t.deleteBtn}</button>
                       </>
                     ) : b.authorId === myId ? (
