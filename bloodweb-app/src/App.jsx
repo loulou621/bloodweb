@@ -18,7 +18,7 @@ const T = {
     createdBy: "Créé par",
     all: "Tous", survivor: "Survivant", killer: "Tueur",
     search: "Rechercher un titre, une perk, un pseudo…",
-    sortTop: "Classement", sortRecent: "Récents",
+    sortTop: "Top builds", sortRecent: "Récents",
     propose: "Proposer un build", proposeShort: "+ Build",
     loginPrompt: "Entre ton pseudo", pseudoPh: "Ton pseudo", pwPh: "Mot de passe",
     enter: "Entrer", logout: "Déconnexion", loggedAs: "Connecté",
@@ -63,7 +63,7 @@ const T = {
     createdBy: "Created by",
     all: "All", survivor: "Survivor", killer: "Killer",
     search: "Search a title, a perk, a username…",
-    sortTop: "Ranking", sortRecent: "Recent",
+    sortTop: "Top builds", sortRecent: "Recent",
     propose: "Submit a build", proposeShort: "+ Build",
     loginPrompt: "Enter your username", pseudoPh: "Your username", pwPh: "Password",
     enter: "Enter", logout: "Log out", loggedAs: "Logged in",
@@ -108,7 +108,7 @@ const T = {
     createdBy: "Creado por",
     all: "Todos", survivor: "Superviviente", killer: "Asesino",
     search: "Buscar título, perk o usuario…",
-    sortTop: "Ranking", sortRecent: "Recientes",
+    sortTop: "Top builds", sortRecent: "Recientes",
     propose: "Proponer build", proposeShort: "+ Build",
     loginPrompt: "Escribe tu usuario", pseudoPh: "Tu usuario", pwPh: "Contraseña",
     enter: "Entrar", logout: "Salir", loggedAs: "Conectado",
@@ -803,7 +803,7 @@ const CSS = `
 .link-btn { background:none; border:none; color:var(--muted); font-size:11.5px; cursor:pointer; text-decoration:underline; }
 
 .controls { display:flex; gap:12px; align-items:center; flex-wrap:wrap;
-  padding:16px clamp(16px,4vw,46px); }
+  max-width:1240px; margin:0 auto; padding:16px clamp(16px,4vw,46px); }
 .side-toggle { display:flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
 .side-btn { background:rgba(0,0,0,.3); border:none; color:var(--muted); padding:9px 16px; cursor:pointer;
   font-size:13px; font-weight:600; font-family:'Cinzel',serif; letter-spacing:.5px; transition:.18s; }
@@ -840,7 +840,7 @@ const CSS = `
 .ai-reason { font-size:13.5px; line-height:1.55; color:#d4ccbf; margin:6px 0 0;
   background:rgba(123,75,179,.08); border-left:2px solid #7b4bb3; padding:10px 12px; border-radius:0 8px 8px 0; }
 
-.tagbar { display:flex; gap:7px; flex-wrap:wrap; padding:0 clamp(16px,4vw,46px) 14px; position:relative; z-index:2; }
+.tagbar { display:flex; gap:7px; flex-wrap:wrap; max-width:1240px; margin:0 auto; padding:0 clamp(16px,4vw,46px) 14px; position:relative; z-index:2; }
 .tag-chip { background:rgba(0,0,0,.3); border:1px solid var(--line); color:var(--muted); font-size:11.5px;
   padding:5px 11px; border-radius:20px; cursor:pointer; transition:.15s; font-weight:600; }
 .tag-chip:hover { color:var(--bone); border-color:var(--blood); }
@@ -857,8 +857,8 @@ const CSS = `
 .act-btn.rep:hover { color:var(--gold); background:rgba(216,177,90,.1); }
 .act-btn.edit:hover { color:#7fb0ff; background:rgba(90,140,216,.12); }
 
-.grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  padding:8px clamp(16px,4vw,46px) 40px; }
+.grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fill,minmax(350px,1fr));
+  max-width:1240px; margin:0 auto; padding:8px clamp(16px,4vw,46px) 40px; }
 .state { grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--muted); }
 .pagination { grid-column:1/-1; display:flex; justify-content:center; align-items:center; flex-wrap:wrap;
   gap:7px; padding:26px 10px 6px; }
@@ -887,7 +887,7 @@ const CSS = `
 .author-link { cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:2px; transition:.15s; }
 .author-link:hover { color:var(--blood); }
 .profile-banner { position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:14px;
-  margin:0 clamp(16px,4vw,46px) 16px; padding:14px 18px; flex-wrap:wrap;
+  max-width:1240px; margin:0 auto 16px; padding:14px clamp(18px,4vw,46px); flex-wrap:wrap;
   background:linear-gradient(180deg, rgba(192,40,45,.12), rgba(0,0,0,.25)); border:1px solid var(--blood-deep);
   border-radius:14px; box-shadow:0 0 24px rgba(192,40,45,.18); animation:rise .25s ease; }
 .pf-left { display:flex; align-items:center; gap:14px; }
