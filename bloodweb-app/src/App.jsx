@@ -945,11 +945,11 @@ const CSS = `
 .modal-sides .side-btn { flex:1; }
 .sel-row { display:flex; gap:12px; justify-content:center; padding:10px 0 4px; }
 .modal-filter { width:100%; margin-top:4px; }
-.perk-pool { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:10px 6px;
+.perk-pool { display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr)); gap:16px 6px;
   max-height:230px; overflow-y:auto; padding:14px 6px; margin-top:10px; border:1px solid var(--line);
   border-radius:10px; background:rgba(0,0,0,.25); }
 .pool-count { text-align:right; font-size:12px; font-weight:800; letter-spacing:.4px; color:var(--muted); margin:7px 4px 0; text-transform:uppercase; opacity:.85; }
-.pool-item { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:5px; padding:2px; }
+.pool-item { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:8px; padding:2px; }
 .pool-name { font-size:9px; color:var(--muted); text-align:center; line-height:1.15; height:32px; overflow:hidden; }
 .field { width:100%; background:rgba(0,0,0,.45); border:1px solid var(--line); color:var(--bone);
   padding:11px 13px; border-radius:9px; font-size:14px; font-family:inherit; }
