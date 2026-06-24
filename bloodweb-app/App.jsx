@@ -187,7 +187,7 @@ function PerkDiamond({ perk, size = 60, onClick, selected, dim }) {
     >
       <span className="pd-frame" style={{ borderColor: col, boxShadow: "none" }} />
       {perk && perk.img && !err ? (
-        <img className="pd-img" src={perk.img} alt={perk.name} loading="lazy" onError={() => setErr(true)} />
+        <span className="pd-imgwrap"><img className="pd-img" src={perk.img} alt={perk.name} loading="lazy" onError={() => setErr(true)} /></span>
       ) : (
         <span className="pd-fallback" style={{ color: col }}>{perk ? initials(perk.name) : "?"}</span>
       )}
@@ -920,8 +920,8 @@ const CSS = `
 .pd-frame { position:absolute; inset:0; transform:rotate(45deg); border:2px solid; border-radius:3px;
   background:radial-gradient(circle at 50% 35%, #221a16, #0c0908); transition:.15s; }
 .perk-diamond.clickable:hover .pd-frame { filter:brightness(1.3); }
-.pd-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); }
+.pd-imgwrap { position:absolute; inset:0; clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%); overflow:hidden; }
+.pd-img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transform:scale(1.32); }
 .pd-fallback { position:relative; z-index:1; font-family:'Cinzel',serif; font-weight:700; font-size:13px; }
 .pd-check { position:absolute; top:-4px; right:-4px; z-index:3; width:18px; height:18px; border-radius:50%;
   color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 8px rgba(0,0,0,.6); }
