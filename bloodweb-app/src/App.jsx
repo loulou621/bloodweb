@@ -950,7 +950,7 @@ const CSS = `
   border-radius:10px; background:rgba(0,0,0,.25); }
 .pool-count { text-align:right; font-size:12px; font-weight:800; letter-spacing:.4px; color:var(--muted); margin:7px 4px 0; text-transform:uppercase; opacity:.85; }
 .pool-item { background:none; border:none; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:5px; padding:2px; }
-.pool-name { font-size:9px; color:var(--muted); text-align:center; line-height:1.1; height:22px; overflow:hidden; }
+.pool-name { font-size:9px; color:var(--muted); text-align:center; line-height:1.15; height:32px; overflow:hidden; }
 .field { width:100%; background:rgba(0,0,0,.45); border:1px solid var(--line); color:var(--bone);
   padding:11px 13px; border-radius:9px; font-size:14px; font-family:inherit; }
 .field:focus { outline:none; border-color:var(--blood); }
